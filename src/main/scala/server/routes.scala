@@ -11,6 +11,6 @@ object routes {
 
     case GET -> Root / value => Ok(value)
 
-    case value @ POST -> Root => Ok(value.as[String])
+    case value @ POST -> Root => Ok(println(value))
   }
 }
