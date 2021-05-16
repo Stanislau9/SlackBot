@@ -12,7 +12,7 @@ object routes {
     case GET -> Root / value => Ok(value)
 
     case value @ POST -> Root =>
-      println(s"DEBUG ->>>>> $value")
+      println(s"DEBUG ->>>>> ${value.as[String]}")
       Ok(value.as[String])
   }
 }
