@@ -12,7 +12,10 @@ object routes {
     case GET -> Root / value => Ok(value)
 
     case value @ POST -> Root =>
-      println(s"DEBUG ->>>>> ${value.as[String]}")
+      for {
+        v <- value.as[String]
+        _ <- IO(println(s"DEBUG ->>>>> $v"))
+      } yield ()
       Ok(value.as[String])
   }
 }
