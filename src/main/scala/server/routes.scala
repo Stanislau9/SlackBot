@@ -16,9 +16,10 @@ object routes {
 
     case value @ POST -> Root =>
       for {
-        v        <- value.as[String]
-        _        <- IO(println(s"DEBUG ->>>>> $v"))
-        response <- Ok("println(m.asJson.toString)\n  println(\"----------------------\")".asJson)
+        v <- value.as[String]
+        _ <- IO(println(s"DEBUG ->>>>> $v"))
+        response <- Ok(
+          "{\n    \"text\": \"I am a test message\",\n    \"attachments\": [\n        {\n            \"text\": \"And here’s an attachment!\"\n        }\n    ]\n})".asJson)
       } yield response
 
   }
