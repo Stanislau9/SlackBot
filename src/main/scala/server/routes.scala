@@ -11,6 +11,8 @@ object routes {
 
     case GET -> Root / value => Ok(value)
 
-    case value @ POST -> Root => Ok(println(value))
+    case value @ POST -> Root =>
+      println(s"DEBUG ->>>>> $value")
+      Ok(value.as[String])
   }
 }
