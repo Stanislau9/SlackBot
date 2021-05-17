@@ -3,6 +3,7 @@ package serverSlack
 import cats.effect.IO
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
+import io.circe.syntax.EncoderOps
 import org.http4s.{EntityDecoder, HttpRoutes}
 import org.http4s.circe.CirceEntityCodec.circeEntityDecoder
 import org.http4s.circe.jsonOf
@@ -20,9 +21,8 @@ object routes {
 
     case value @ POST -> Root =>
       for {
-        v <- value.as[triggerId]
-        //id = v.as[triggerId]
-        _        <- IO(println(s"DEBUG ->>>>> $v"))
+        v        <- value.as[String]
+        _        <- IO(println(s"DEBUG ->>>>> ${v.drop(8).asJson.as[triggerId]}"))
         response <- Ok(value.as[String])
       } yield response
 
