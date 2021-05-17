@@ -21,8 +21,8 @@ object routes {
 
     case value @ POST -> Root =>
       for {
-        v        <- value.as[String]
-        _        <- IO(println(s"DEBUG ->>>>> ${v.drop(8).asJson.as[triggerId]}"))
+        v        <- value.as[triggerId]
+        _        <- IO(println(s"DEBUG ->>>>> $v"))
         response <- Ok(value.as[String])
       } yield response
 
