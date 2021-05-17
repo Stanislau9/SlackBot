@@ -3,7 +3,7 @@ package serverSlack
 import cats.effect.IO
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
-import io.circe.syntax.EncoderOps
+//import io.circe.syntax.EncoderOps
 import org.http4s.{EntityDecoder, HttpRoutes}
 import org.http4s.circe.CirceEntityCodec.circeEntityDecoder
 import org.http4s.circe.jsonOf
@@ -12,7 +12,7 @@ import serverSlack.slackApiMethods.chat._
 
 object routes {
 
-  //implicit val authorDecoder: Decoder[postMessage]                 = deriveDecoder
+  implicit val authorDecoder: Decoder[triggerId] = deriveDecoder
   //implicit val authorDecoderEntity: EntityDecoder[IO, postMessage] = jsonOf
 
   val routes: HttpRoutes[IO] = HttpRoutes.of[IO] {
