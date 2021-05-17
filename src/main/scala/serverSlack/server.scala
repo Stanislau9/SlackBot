@@ -1,10 +1,9 @@
-package server
+package serverSlack
 
 import cats.effect.{ExitCode, IO, IOApp}
 
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.syntax.all._
-
 import routes.routes
 
 import scala.concurrent.ExecutionContext

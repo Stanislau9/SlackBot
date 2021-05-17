@@ -9,6 +9,11 @@ ThisBuild / organizationName := "example"
 lazy val root = (project in file("."))
   .settings(
     name := "SlackBot",
+    scalacOptions ++= Seq(
+      "-deprecation",
+      "-feature",
+      "-Ymacro-annotations",
+    ),
     libraryDependencies ++= Seq(
       scalaTest % Test,
       "org.typelevel" %% "cats-core" % catsVersion,
