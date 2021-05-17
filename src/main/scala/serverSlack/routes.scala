@@ -12,8 +12,8 @@ import serverSlack.slackApiMethods.chat._
 
 object routes {
 
-  implicit val authorDecoder: Decoder[postMessage]                 = deriveDecoder
-  implicit val authorDecoderEntity: EntityDecoder[IO, postMessage] = jsonOf
+  //implicit val authorDecoder: Decoder[postMessage]                 = deriveDecoder
+  //implicit val authorDecoderEntity: EntityDecoder[IO, postMessage] = jsonOf
 
   val routes: HttpRoutes[IO] = HttpRoutes.of[IO] {
 
