@@ -1,12 +1,10 @@
 package server
 
 import cats.effect.IO
-
+import io.circe.Json
 import org.http4s.HttpRoutes
+import org.http4s.circe.jsonDecoder
 import org.http4s.dsl.io._
-
-import org.http4s.circe._
-import io.circe.syntax._
 
 object routes {
 
@@ -16,10 +14,9 @@ object routes {
 
     case value @ POST -> Root =>
       for {
-        v <- value.as[String]
-        _ <- IO(println(s"DEBUG ->>>>> $v"))
-        response <- Ok(
-          "{\n    \"text\": \"I am a test message\",\n    \"attachments\": [\n        {\n            \"text\": \"And here’s an attachment!\"\n        }\n    ]\n})".asJson)
+        v        <- value.as[Json]
+        _        <- IO(println(s"DEBUG ->>>>> ${v}"))
+        response <- Ok(value.as[String])
       } yield response
 
   }
