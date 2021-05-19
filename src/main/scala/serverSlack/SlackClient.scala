@@ -24,7 +24,6 @@ object SlackClient {
     BlazeClientBuilder[IO](ExecutionContext.global).resource.use { client: Client[IO] =>
       for {
         str <- client.expect[String](request)
-        _   <- IO(println(s"DEB_to_client->>>>>>>>>>>>>>>$str"))
       } yield ()
     }
 

@@ -37,9 +37,6 @@ object routes {
           SlackClient.UpdateMessage(cont.container.channelId, blockEdited, cont.container.messageTs)
         }
 
-//        v <- value.as[String]
-//        _ <- IO(println(s"DEBUG_to_server ->>>>> ${URLDecoder.decode(v)}"))
-
         response <- Ok()
       } yield response
 
