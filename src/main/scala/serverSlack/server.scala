@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext
 object server extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
     BlazeServerBuilder[IO](ExecutionContext.global)
-      .bindHttp(port = 8080, host = "68.183.217.119")
+      .bindHttp(port = 8080, host = "localhost")
       .withHttpApp(routes.orNotFound)
       .serve
       .compile
