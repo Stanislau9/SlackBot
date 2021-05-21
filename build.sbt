@@ -50,7 +50,7 @@ lazy val root = (project in file("."))
       "org.tpolecat" %% "doobie-hikari" % doobieVersion,
       "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
       "org.mockito" %% "mockito-scala" % "1.15.0" % Test,
-      "org.scalaj" %% "scalaj-http" % "2.4.2" % Test,
+      "org.scalaj" %% "scalaj-http" % "2.4.2",
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % Test,
       "org.typelevel" %% "cats-tagless-macros" % catsTaglessVersion,
       "com.h2database" % "h2" % "1.4.200",

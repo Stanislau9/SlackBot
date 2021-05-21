@@ -1,0 +1,3 @@
+package serverSlack
+
+object MessageBuilder {}
