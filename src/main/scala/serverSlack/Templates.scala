@@ -267,4 +267,59 @@ object Templates {
                                     |		}
                                     |	]
                                     |}""".stripMargin).getOrElse(Json.Null)
+
+  val modalUpdatedPoll = parser.parse("""{
+                                        |	"type": "modal",
+                                        |	"title": {
+                                        |		"type": "plain_text",
+                                        |		"text": "My App"
+                                        |	},
+                                        |	"submit": {
+                                        |		"type": "plain_text",
+                                        |		"text": "Submit"
+                                        |	},
+                                        |	"close": {
+                                        |		"type": "plain_text",
+                                        |		"text": "Cancel"
+                                        |	},
+                                        |	"blocks": [
+                                        |		{
+                                        |			"type": "input",
+                                        |			"element": {
+                                        |				"type": "plain_text_input",
+                                        |				"action_id": "plain_text_input-action"
+                                        |			},
+                                        |			"label": {
+                                        |				"type": "plain_text",
+                                        |				"text": "1 option"
+                                        |			}
+                                        |		},
+                                        |		{
+                                        |			"type": "input",
+                                        |			"element": {
+                                        |				"type": "plain_text_input",
+                                        |				"action_id": "plain_text_input-action"
+                                        |			},
+                                        |			"label": {
+                                        |				"type": "plain_text",
+                                        |				"text": "2 option",
+                                        |				"emoji": true
+                                        |			}
+                                        |		},
+                                        |		{
+                                        |			"type": "actions",
+                                        |			"elements": [
+                                        |				{
+                                        |					"type": "button",
+                                        |					"text": {
+                                        |						"type": "plain_text",
+                                        |						"text": "Add option"
+                                        |					},
+                                        |					"value": "addOption",
+                                        |					"action_id": "actionId-1"
+                                        |				}
+                                        |			]
+                                        |		}
+                                        |	]
+                                        |}""".stripMargin).getOrElse(Json.Null)
 }

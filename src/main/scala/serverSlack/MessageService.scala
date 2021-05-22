@@ -1,13 +1,13 @@
 package serverSlack
-
+import cats.syntax.all._
 import cats.effect.Sync
-
+import io.circe
+import io.circe.Decoder.Result
 import org.http4s.UrlForm
-
-import io.circe.{Json, ParsingFailure, parser}
+import serverSlack.PayloadType._
+import serverSlack.View._
+import io.circe.{DecodingFailure, Json, ParsingFailure, parser}
 import io.circe.syntax._
-
-import serverSlack.Codecs._
 
 trait MessageService[F[_]] {
   def reply(form: UrlForm): F[Unit]
@@ -17,20 +17,26 @@ object MessageService {
 
   def apply[F[_]: Sync]: MessageService[F] = (form: UrlForm) => {
 
-    val payload: Either[ParsingFailure, Json] = form.get("payload").map(parser.parse).headOption.get
+    val res: Either[circe.Error, F[Unit]] = for {
 
-    val payloadType: PayloadType = payload.flatMap(_.as[PayloadType]).getOrElse(PayloadType(""))
-
-    payloadType.`type` match {
-      case "shortcut" => {
-        val triggerId: TriggerId = payload.flatMap(_.as[TriggerId]).getOrElse(TriggerId(""))
-        Sync[F].delay(Client.openModal(view.Open(triggerId.triggerId, Templates.modalAddPoll).asJson))
+      payloadJson <- parser.parse(form.getFirstOrElse("payload", ""))
+      payload     <- payloadJson.as[Payload]
+      s = payload match {
+        case Shortcut(triggerId) =>
+          Sync[F].delay(println(Client.openModal(Open(triggerId, MessageBuilder.viewConstructor()).asJson)))
+        case BlockActions(user, container) =>
+          container match {
+            case View(viewId) =>
+              Sync[F].delay(
+                println(Client.updateModal(Update(viewId, MessageBuilder.viewConstructor(payloadJson)).asJson)))
+            case Message(messageTs, channelId) => Sync[F].delay() //update poll
+          }
+        case ViewSubmission() => Sync[F].delay() //send poll
       }
-      case "block_actions"   => Sync[F].delay() //----------
-      case "view_submission" => Sync[F].delay(Client.postMessage(Message("chat-bot", "modal submitted").asJson))
-      case _                 => Sync[F].delay() //----------
-    }
+
+    } yield s
+
+    res.sequence.map(_ => ())
 
   }
-
 }
