@@ -9,6 +9,9 @@ import org.http4s.UrlForm
 import io.circe.parser.parse
 
 import cats.effect.Sync
+import cats.effect.concurrent.Ref
+
+import cats.syntax.all._
 
 trait MessageService[F[_]] {
 
@@ -17,8 +20,8 @@ trait MessageService[F[_]] {
 
 object MessageService {
 
-  def of[F[_]: Sync]: MessageService[F] =
-    (form: UrlForm) =>
+  def of[F[_]: Sync]: F[MessageService[F]] = {
+    Ref.of(Map.empty[String, String]).map { state: Ref[F, Map[String, String]] => (form: UrlForm) =>
       Sync[F].delay(
         for {
           payloadStr  <- form.getFirst("payload")
@@ -34,5 +37,9 @@ object MessageService {
             case ViewSubmission() => sendMessage(payloadJson)
           }
         } yield message
-    )
+      )
+    }
+
+  }
+
 }
