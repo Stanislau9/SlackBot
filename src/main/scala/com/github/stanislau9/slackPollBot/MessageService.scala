@@ -1,45 +1,39 @@
 package com.github.stanislau9.slackPollBot
 
 import com.github.stanislau9.slackPollBot.Resources.Models.PayloadModels._
-import org.http4s.UrlForm
-import io.circe.parser._
+import com.github.stanislau9.slackPollBot.MessageConstructor._
+import com.github.stanislau9.slackPollBot.Resources.Models.MessageModels.Response
 import cats.Monad
-import cats.data.EitherT
-
-import io.circe.Decoder.Result
-import io.circe.{DecodingFailure, Json, ParsingFailure}
+import org.http4s.UrlForm
+import io.circe.parser.parse
+import cats.data.OptionT
 
 trait MessageService[F[_]] {
 
-  def handle(form: UrlForm): F[Either[String, Message]]
+  def handle(form: UrlForm): F[Option[Response]]
 }
 
 object MessageService {
 
-  def of[F[_]]: MessageService[F] = new MessageService[F] {
-    override def handle(form: UrlForm): F[Either[String, Message]] = {
-      val payloadStr: String = form.getFirstOrElse("payload", "")
+  def of[F[_]: Monad]: MessageService[F] = new MessageService[F] {
+    override def handle(form: UrlForm): F[Option[Response]] = {
 
-      val payloadJson = EitherT.fromEither(parse(payloadStr))
-      val payload =
-        EitherT.fromEither(parse(payloadStr).map(_.as[Payload]))
-//      val tempEither = for {
+      val result: Option[Response] = for {
+        payloadStr  <- form.getFirst("payload")
+        payloadJson <- parse(payloadStr).toOption
+        payload     <- payloadJson.as[Payload].toOption
+        message <- payload match {
+          case Shortcut(triggerId) => openView(triggerId, payloadJson)
+          case BlockActions(user, container) =>
+            container match {
+              case View(viewId)                  => updateView(viewId, payloadJson)
+              case Message(messageTs, channelId) => updateMessage(messageTs, channelId, payloadJson)
+            }
+          case ViewSubmission() => sendMessage(payloadJson)
+        }
+      } yield message
 
-//        payloadJson <- parse(payloadStr)
-//        payload     <- payloadJson.as[Payload]
-//        message = payload match {
-      ////          case Shortcut(triggerId) => OpenView()
-      ////          case BlockActions(user, container) =>
-      ////            container match {
-      ////              case View(viewId)                  => UpdateView()
-      ////              case Message(messageTs, channelId) => UpdateMessage()
-      ////            }
-      ////          case ViewSubmission() => SendMessage()
-      ////        }
-//      } yield ()
-
-      //val a = EitherT.fromEither(tempEither)
-      ???
+      OptionT.fromOption(result).value
 
     }
   }

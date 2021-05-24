@@ -4,13 +4,11 @@ import io.circe.Json
 import io.circe.syntax._
 import com.github.stanislau9.slackPollBot.Resources.Models.MessageModels._
 
-trait MessageConstructor[F[_]] {
-  def openView(triggerId: String, payload: Json): F[View.Open]
-  def updateView(messageTs: String, channelId: String, payload: Json): F[View.Update]
-  def sendMessage()
-}
-
 object MessageConstructor {
+  def openView(triggerId: String, payload: Json): Option[Response]                         = ???
+  def updateView(viewId: String, payload: Json): Option[Response]                          = ???
+  def updateMessage(messageTs: String, channelId: String, payload: Json): Option[Response] = ???
+  def sendMessage(payload: Json): Option[Response]                                         = ???
 
 //  def viewConstructor(requestViewBody: Json = Json.Null): Json = {
 //
