@@ -5,6 +5,9 @@ import io.circe.generic.extras.{Configuration, ConfiguredJsonCodec}
 
 object MessageModels {
 
+  implicit val config: Configuration =
+    Configuration.default.withSnakeCaseMemberNames.withSnakeCaseConstructorNames.withDiscriminator("type")
+
   sealed trait Response
   object View {
     implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames.withSnakeCaseConstructorNames
@@ -17,10 +20,6 @@ object MessageModels {
     @ConfiguredJsonCodec final case class Post(channel: String, blocks: List[Json])               extends Response
     @ConfiguredJsonCodec final case class Update(channel: String, ts: String, blocks: List[Json]) extends Response
   }
-
-  implicit val config: Configuration =
-    Configuration.default.withSnakeCaseMemberNames.withSnakeCaseConstructorNames.withDiscriminator("type")
-
   @ConfiguredJsonCodec final case class View(Title: Title,
                                              submit: Submit,
                                              close: Close,

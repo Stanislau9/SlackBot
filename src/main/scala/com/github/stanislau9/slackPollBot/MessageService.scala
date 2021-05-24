@@ -28,7 +28,7 @@ object MessageService {
           payloadJson <- parse(payloadStr).toOption
           payload     <- payloadJson.as[Payload].toOption
           message <- payload match {
-            case Shortcut(triggerId) => openView(triggerId, payloadJson)
+            case Shortcut(triggerId) => openView(triggerId)
             case BlockActions(user, container) =>
               container match {
                 case View(viewId)                  => updateView(viewId, payloadJson)
