@@ -29,9 +29,14 @@ object MessageService {
             case View(viewId) =>
               Sync[F].delay(
                 println(Client.updateModal(Update(viewId, MessageBuilder.viewConstructor(payloadJson)).asJson)))
-            case Message(messageTs, channelId) => Sync[F].delay() //update poll
+            case Message(messageTs, channelId) =>
+              Sync[F].delay(println(
+                Client.updateMessage(Chat.Update(channelId, messageTs, MessageBuilder.updatePoll(payloadJson)).asJson)))
           }
-        case ViewSubmission() => Sync[F].delay() //send poll
+        case ViewSubmission() =>
+          Sync[F]
+            .delay(
+              println(Client.postMessage(Chat.Post("chat-bot", MessageBuilder.PollConstructor(payloadJson)).asJson)))
       }
 
     } yield s

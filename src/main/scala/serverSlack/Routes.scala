@@ -15,12 +15,12 @@ case class Routes[F[_]: Sync](messageService: MessageService[F]) extends Http4sD
 
     case request @ POST -> Root =>
       for {
-        urlForm <- request.as[UrlForm]
-        _       <- messageService.reply(urlForm)
 
         str <- request.as[String]
         _   <- Sync[F].delay(println(s"DEBUG_to_server ->>>>> ${URLDecoder.decode(str)}"))
 
+        urlForm  <- request.as[UrlForm]
+        _        <- messageService.reply(urlForm)
         response <- Ok()
       } yield response
 
