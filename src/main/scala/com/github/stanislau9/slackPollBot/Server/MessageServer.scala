@@ -1,9 +1,10 @@
-package com.github.stanislau9.slackPollBot
+package com.github.stanislau9.slackPollBot.Server
 
 import cats.effect.{ConcurrentEffect, Resource, Sync, Timer}
+import com.github.stanislau9.slackPollBot.MessageHandle.MessageService
 import com.github.stanislau9.slackPollBot.Resources.Config
-import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.client.Client
+import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.syntax.all._
 
 import scala.concurrent.ExecutionContext

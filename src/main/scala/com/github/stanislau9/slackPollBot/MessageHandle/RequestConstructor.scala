@@ -1,11 +1,12 @@
-package com.github.stanislau9.slackPollBot
+package com.github.stanislau9.slackPollBot.MessageHandle
+
 import com.github.stanislau9.slackPollBot.Resources.Config
 //import com.github.stanislau9.slackPollBot.Resources.Models.MessageModels.{Chat, Response, View}
-import com.github.stanislau9.slackPollBot.Resources.Models.MessageModels2._
+import com.github.stanislau9.slackPollBot.Resources.Models.MessageModels._
 import io.circe.Json
-import org.http4s.{Header, Method, Request, Uri}
 import io.circe.syntax._
 import org.http4s.circe.jsonEncoder
+import org.http4s.{Header, Method, Request, Uri}
 
 object RequestConstructor {
 
@@ -26,19 +27,6 @@ object RequestConstructor {
         }
       case None => construct(Config.viewOpen, None.asJson)
     }
-//    response match {
-//      case Some(value) =>
-//        value match {
-//          case resp: View.Open => {
-//            println(resp.asJson)
-//            construct(Config.viewOpen, resp.asJson)
-//          }
-//          case resp: View.Update => construct(Config.viewUpdate, resp.asJson)
-//          case resp: Chat.Post   => construct(Config.chatPostMessage, resp.asJson)
-//          case resp: Chat.Update => construct(Config.chatUpdateMessage, resp.asJson)
-//        }
-//      case None => construct(Config.viewOpen, None.asJson)
-//    }
 
   }
 }

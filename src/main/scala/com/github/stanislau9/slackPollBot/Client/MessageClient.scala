@@ -1,4 +1,4 @@
-package com.github.stanislau9.slackPollBot
+package com.github.stanislau9.slackPollBot.Client
 
 import cats.effect.{ConcurrentEffect, Resource}
 import org.http4s.client.Client
