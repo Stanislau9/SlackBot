@@ -7,7 +7,7 @@ object MessageConstructor {
   def openView(triggerId: String): Option[Response] = {
 
     val button     = Button(Text("Add option"), "0", "AddOption")
-    val inputTheme = Input(Element("theme"), Label("Question"))
+    val inputTheme = Input(Element("theme"), Label("Question description"))
     val inputChat  = Input(Element("conversation"), Label("Conversation"))
     val input      = Input(Element("1"), Label("1 option"))
     val actions    = Actions(List(button))
